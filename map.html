@@ -2,7 +2,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Show Google Map with Latitude and Longitude in asp.net website</title>
+    <title>Maps | Gaurave</title>
+    <!-- jquery CDN will be placed here -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
     <style type="text/css">
         html { height: 100% }
         body { height: 100%; margin: 0; padding: 0 }
@@ -76,14 +80,13 @@
                 console.log("it is called");
                 $.ajax({
                     type: 'GET',
-                    url: 'https://maps.googleapis.com/maps/api/directions/json?origin=28.00456,78.0546&destination=28.7895,75.0002&key=AIzaSyCkCnsOxuluKq9YpOCcw9nELPU2UGaBtnc',
+                    url: '../http/maps.googleapis.com/maps/api/directions/json?origin=28.00456,78.0546&destination=28.7895,75.0002&key=AIzaSyCkCnsOxuluKq9YpOCcw9nELPU2UGaBtnc',
                     dataType: 'application/json',
                     success: function(data) {
                         alert(data);
                         //$('#subscribePage').html('<h1>POSTED</h1>');
                     } // Success Function
-                });   // Ajax Call
-            }
+                });   // Ajax Cal
 
 
 
