@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Show Google Map with Latitude and Longitude in asp.net website</title>
+    <style type="text/css">
+        html { height: 100% }
+        body { height: 100%; margin: 0; padding: 0 }
+        #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkCnsOxuluKq9YpOCcw9nELPU2UGaBtnc">
+    </script>
+    <script type="text/javascript">
+
+        function getLocation() {
+            if(navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(initialize);
+            }
+        }
+
+        function initialize(position) {
+            var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            var myOptions = {
+                zoom:15,
+                center: myLatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(document.getElementById("gmap"), myOptions);
+            // marker refers to a global variable
+            marker = new google.maps.Marker({
+                position: myLatlng,
+                map: map
+            });
+
+
+            document.getElementById('lat').innerHTML=position.coords.latitude;
+            document.getElementById('lon').innerHTML=position.coords.longitude;
+
+
+            //for selecting the initial place to start
+            
+
+
+            // if center changed then update lat and lon document objects
+            google.maps.event.addListener(map, 'center_changed', function () {
+
+                //getLocation();
+                var location = map.getCenter();
+                document.getElementById("lat").innerHTML =location.lat();
+
+                document.getElementById("lon").innerHTML =location.lng();
+                // call function to reposition marker location
+                placeMarker(location);
+            });
+
+
+            function placeMarker(location) {
+                var clickedLocation = new google.maps.LatLng(location);
+                marker.setPosition(location);
+            }
+        }
+        window.onload = function () { getLocation() };
+    </script>
+    <style>
+        div#gmap {
+            width: 80%;
+            height: 500px;
+            border:double;
+        }
+    </style>
+</head>
+
+<body>
+<form id="form1" runat="server">
+    <center>
+        <!-- MAP HOLDER -->
+        <div id="gmap"></div>
+        <!-- REFERENCES -->
+
+    </center>
+    Lattitude:
+    <div id="lon">
+    </div>
+    Longitude:
+    <div id="lat"></div>
+
+</form>
+</body>
+</html>
