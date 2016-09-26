@@ -21,16 +21,16 @@
         }
 
         function initialize(position) {
-            var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            var Latlng_start = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             var myOptions = {
                 zoom:15,
-                center: myLatlng,
+                center: Latlng_start,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }
             map = new google.maps.Map(document.getElementById("gmap"), myOptions);
             // marker refers to a global variable
             marker = new google.maps.Marker({
-                position: myLatlng,
+                position: Latlng_start,
                 map: map
             });
 
@@ -54,6 +54,37 @@
                 // call function to reposition marker location
                 placeMarker(location);
             });
+
+            google.maps.event.addListener(map, "click", function (e) {
+
+                //lat and lng is available in e object
+                var latLng_end = e.latLng;
+                document.getElementById('lon_end').innerHTML=latLng_end.lng();
+                document.getElementById('lat_end').innerHTML=latLng_end.lat();
+
+
+                marker_new = new google.maps.Marker({
+                    position:latLng_end,
+                    map: map
+                });
+                locating_on_map();
+            });
+
+
+            function locating_on_map()
+            {
+                console.log("it is called");
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://maps.googleapis.com/maps/api/directions/json?origin=28.00456,78.0546&destination=28.7895,75.0002&key=AIzaSyCkCnsOxuluKq9YpOCcw9nELPU2UGaBtnc',
+                    dataType: 'application/json',
+                    success: function(data) {
+                        alert(data);
+                        //$('#subscribePage').html('<h1>POSTED</h1>');
+                    } // Success Function
+                });   // Ajax Call
+            }
+
 
 
             function placeMarker(location) {
@@ -80,11 +111,24 @@
         <!-- REFERENCES -->
 
     </center>
-    Lattitude:
-    <div id="lon">
+    <div id="starting" style="float: left; margin-right: 100px">
+        Lattitude:
+        <div id="lon">
+        </div>
+        Longitude:
+        <div id="lat"></div>
     </div>
-    Longitude:
-    <div id="lat"></div>
+
+
+    <div id="ending" style="margin-left:100px">
+        Lattitude:
+        <div id="lon_end">
+        </div>
+        Longitude:
+        <div id="lat_end"></div>
+    </div>
+
+
 
 </form>
 </body>
